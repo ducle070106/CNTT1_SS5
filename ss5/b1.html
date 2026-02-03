@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Trả Sách</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .instruction { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+
+    <h1>Chương Trình Quản Lý Thủ Thư</h1>
+    <p>Nhấn F12 (hoặc Chuột phải -> Kiểm tra) và chọn tab <b>Console</b> để xem kết quả.</p>
+    <button onclick="quanLyTraSach()">Bắt đầu nhập sách</button>
+
+    <script>
+        function quanLyTraSach() {
+            let danhSachSach = [];
+            let input = prompt("Bạn muốn trả bao nhiêu cuốn sách?");
+            let soLuong = parseInt(input);
+
+            if (isNaN(soLuong) || soLuong <= 0) {
+                alert("Vui lòng nhập một số nguyên dương hợp lệ.");
+                return;
+            }
+            for (let i = 1; i <= soLuong; i++) {
+                let tenSach = prompt(`Nhập tên cuốn sách thứ ${i}:`);
+                danhSachSach.push(tenSach);
+            }
+            console.log("--- KẾT QUẢ QUẢN LÝ ---");
+            console.log("Tổng số sách đã được trả: " + danhSachSach.length);
+            console.log("Danh sách sách đã trả:");
+            
+            for (let j = 0; j < danhSachSach.length; j++) {
+                console.log(`${j + 1}. ${danhSachSach[j]}`);
+            }
+            
+            alert("Đã nhập xong! Hãy kiểm tra kết quả trong mục Console.");
+        }
+    </script>
+</body>
+</html>

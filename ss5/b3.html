@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ Thống Kiểm Kê Sách</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; text-align: center; padding: 50px; background-color: #f4f7f6; }
+        button { padding: 15px 30px; font-size: 18px; cursor: pointer; background-color: #27ae60; color: white; border: none; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button:hover { background-color: #2ecc71; }
+        .info { margin-top: 20px; color: #34495e; }
+    </style>
+</head>
+<body>
+
+    <h1>Quản Lý Mã Sách Bổ Sung</h1>
+    <button onclick="quanLyKhoSach()">Bắt đầu kiểm kê kho</button>
+    <p class="info">Mở <b>Console (F12)</b> để xem báo cáo chi tiết sau khi nhập.</p>
+
+    <script>
+        function quanLyKhoSach() {
+            let booksId = [];
+            let booksName = [];
+            let inventoryQuantity = [];
+            let n = parseInt(prompt("Có bao nhiêu loại sách cần kiểm tra bổ sung hôm nay?"));
+
+            if (isNaN(n) || n <= 0) {
+                alert("Vui lòng nhập một số nguyên dương.");
+                return;
+            }
+            for (let i = 0; i < n; i++) {
+                let id = prompt(`Nhập mã sách thứ ${i + 1}:`);
+                let name = prompt(`Nhập tên sách thứ ${i + 1}:`);
+                let qty = parseInt(prompt(`Nhập số lượng tồn kho của sách ${id}:`));
+                if (id && name && !isNaN(qty)) {
+                    booksId.push(id);
+                    booksName.push(name);
+                    inventoryQuantity.push(qty);
+                } else {
+                    alert("Dữ liệu không hợp lệ, vui lòng nhập lại cuốn này.");
+                    i--; 
+                }
+            }
+            console.log("--- BÁO CÁO KIỂM KÊ KHO ---");
+            console.log("Tổng số loại sách đang kiểm tra: " + booksId.length);
+            let uuTienCount = 0;
+            let hetHangList = [];
+            console.log("Danh sách chi tiết:");
+            for (let j = 0; j < booksId.length; j++) {
+                console.log(`${j + 1}. Mã: ${booksId[j]} - Tên: ${booksName[j]} - Tồn: ${inventoryQuantity[j]}`);
+                if (inventoryQuantity[j] <= 5) {
+                    uuTienCount++;
+                }
+                if (inventoryQuantity[j] === 0) {
+                    hetHangList.push(booksId[j]);
+                }
+            }
+            console.log("---------------------------");
+            console.log("Số lượng sách cần ưu tiên bổ sung (≤ 5 bản): " + uuTienCount);
+            console.log("Các mã sách đã hết hàng (tồn kho = 0): " + (hetHangList.length > 0 ? hetHangList.join(", ") : "Không có"));
+            
+            alert("Đã lập báo cáo xong! Hãy xem trong Console.");
+        }
+    </script>
+</body>
+</html>

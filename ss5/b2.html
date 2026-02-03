@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Sách Trả Muộn</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; text-align: center; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #e74c3c; color: white; border: none; border-radius: 5px; }
+        button:hover { background-color: #c0392b; }
+        .note { color: #555; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <h1>Quản Lý Sách Trả Muộn</h1>
+    <button onclick="quanLySachMuon()">Bắt đầu ghi nhận</button>
+    
+    <p class="note">Nhấn nút trên, sau đó nhấn <b>F12</b> và chọn thẻ <b>Console</b> để xem kết quả chi tiết.</p>
+
+    <script>
+        function quanLySachMuon() {
+            let dsSachMuon = [];
+            let countTenDai = 0; 
+            let soLuong = parseInt(prompt("Hôm nay có bao nhiêu cuốn sách bị trả muộn?"));
+
+            if (isNaN(soLuong) || soLuong <= 0) {
+                alert("Vui lòng nhập một số nguyên dương.");
+                return;
+            }
+            for (let i = 0; i < soLuong; i++) {
+                let tenSach = prompt(`Nhập tên cuốn sách bị trả muộn thứ ${i + 1}:`);
+                dsSachMuon.push(tenSach);
+            }
+            console.log("--- BÁO CÁO SÁCH TRẢ MUỘN ---");
+            console.log("Tổng số sách bị trả muộn: " + dsSachMuon.length);
+            console.log("Danh sách sách bị trả muộn:");
+            for (let j = 0; j < dsSachMuon.length; j++) {
+                console.log(`${j + 1}. ${dsSachMuon[j]}`);
+                if (dsSachMuon[j].length > 20) {
+                    countTenDai++;
+                }
+            }
+            console.log("Số lượng sách có tên dài hơn 20 ký tự: " + countTenDai);
+            
+            alert("Đã thống kê xong! Kiểm tra Console để xem báo cáo.");
+        }
+    </script>
+</body>
+</html>

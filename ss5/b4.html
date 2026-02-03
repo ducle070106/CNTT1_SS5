@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Bảo Trì Sách</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.5; padding: 20px; background-color: #f0f2f5; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        button { padding: 10px 20px; background: #2980b9; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #3498db; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hệ Thống Sửa Chữa & Loại Bỏ Sách</h1>
+        <p>Nhấn nút bên dưới để bắt đầu quy trình kiểm tra.</p>
+        <button onclick="heThongBaoTri()">Bắt đầu quy trình</button>
+        <p><i>Kết quả chi tiết sẽ hiển thị trong <b>Console (F12)</b></i></p>
+    </div>
+
+    <script>
+        function heThongBaoTri() {
+            let booksId = [];
+            let booksName = [];
+            let bookStatus = [];
+            
+            const statusMap = { "1": "Hỏng nhẹ", "2": "Hỏng nặng", "3": "Cần sửa gấp", "4": "Đã sửa xong", "5": "Loại bỏ" };
+            let n = parseInt(prompt("Có bao nhiêu cuốn sách cần kiểm tra tình trạng hôm nay?"));
+            if (isNaN(n) || n <= 0) return;
+
+            for (let i = 0; i < n; i++) {
+                let id = prompt(`Nhập mã sách thứ ${i+1}:`);
+                let name = prompt(`Nhập tên sách thứ ${i+1}:`);
+                let st = prompt(`Tình trạng (1: Hỏng nhẹ, 2: Hỏng nặng, 3: Cần sửa gấp):`);
+                
+                booksId.push(id);
+                booksName.push(name);
+                bookStatus.push(statusMap[st] || "Chưa xác định");
+            }
+
+            console.log("--- DANH SÁCH BAN ĐẦU ---");
+            hienThiDanhSach(booksId, booksName, bookStatus);
+            let choice;
+            do {
+                choice = prompt("Chọn thao tác:\n1: Sửa tình trạng\n2: Loại bỏ (xóa) sách\n0: Kết thúc & In báo cáo");
+
+                if (choice === "1") {
+                    let idSearch = prompt("Nhập mã sách cần sửa:");
+                    let index = findIndexById(booksId, idSearch);
+                    if (index !== -1) {
+                        let newSt = prompt("Tình trạng mới (1: Hỏng nhẹ, 2: Hỏng nặng, 3: Cần sửa gấp, 4: Đã sửa xong, 5: Loại bỏ):");
+                        bookStatus[index] = statusMap[newSt] || bookStatus[index];
+                        console.log(`=> Đã cập nhật trạng thái cho sách ${idSearch}`);
+                        hienThiDanhSach(booksId, booksName, bookStatus);
+                    } else {
+                        alert("Không tìm thấy mã sách!");
+                    }
+                } 
+                else if (choice === "2") {
+                    let idSearch = prompt("Nhập mã sách cần xóa:");
+                    let index = findIndexById(booksId, idSearch);
+                    if (index !== -1) {
+                        booksId.splice(index, 1);
+                        booksName.splice(index, 1);
+                        bookStatus.splice(index, 1);
+                        console.log(`=> Đã xóa sách ${idSearch} khỏi hệ thống`);
+                        hienThiDanhSach(booksId, booksName, bookStatus);
+                    } else {
+                        alert("Không tìm thấy mã sách!");
+                    }
+                }
+            } while (choice !== "0");
+
+            // 3. Báo cáo cuối cùng
+            inBao CaoCuoi(booksId, booksName, bookStatus);
+        }
+
+        // Hàm bổ trợ: Tìm vị trí index theo mã sách
+        function findIndexById(arr, id) {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i] === id) return i;
+            }
+            return -1;
+        }
+        function hienThiDanhSach(ids, names, status) {
+            if (ids.length === 0) { console.log("Danh sách trống."); return; }
+            for (let i = 0; i < ids.length; i++) {
+                console.log(`${i+1}. [${ids[i]}] ${names[i]} - TT: ${status[i]}`);
+            }
+        }
+        function inBaoCaoCuoi(ids, names, status) {
+            let countXong = 0;
+            let countLoaiBo = 0;
+            for (let s of status) {
+                if (s === "Đã sửa xong") countXong++;
+                if (s === "Loại bỏ") countLoaiBo++;
+            }
+            console.log("\n--- BÁO CÁO CUỐI CÙNG ---");
+            console.log("Tổng số sách còn lại trong danh sách: " + ids.length);
+            console.log("Số sách 'Đã sửa xong': " + countXong);
+            console.log("Số sách 'Loại bỏ': " + countLoaiBo);
+            console.log("Danh sách chi tiết cuối cùng:");
+            hienThiDanhSach(ids, names, status);
+        }
+    </script>
+</body>
+</html>
