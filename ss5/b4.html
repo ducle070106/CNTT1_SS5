@@ -70,12 +70,8 @@
                     }
                 }
             } while (choice !== "0");
-
-            // 3. Báo cáo cuối cùng
             inBao CaoCuoi(booksId, booksName, bookStatus);
         }
-
-        // Hàm bổ trợ: Tìm vị trí index theo mã sách
         function findIndexById(arr, id) {
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] === id) return i;
